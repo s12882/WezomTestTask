@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\CarExport;
+use App\Exceptions\ExternalApiException;
 use App\Http\Requests\CarCreateRequest;
 use App\Http\Requests\CarEditRequest;
 use App\Models\Car;
 use App\Services\CarService;
+use App\Services\ExternalApiService;
 use Illuminate\Http\JsonResponse;
-use Maatwebsite\Excel\Facades\Excel;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Illuminate\Http\Request;
 use Throwable;
 
 class CarController extends Controller
 {
     /**
-     * @var Car
+     * @var CarService
      */
     private $modelService;
 
@@ -90,23 +90,15 @@ class CarController extends Controller
     }
 
     /**
-     * @return BinaryFileResponse
-     */
-    function export()
-    {
-        $cars = $this->modelService->filter()->query()->get();
-
-        return Excel::download(new CarExport($cars), 'cars.xlsx');
-    }
-
-    /**
+     * @param Request $request
      * @return JsonResponse
+     * @throws ExternalApiException
      */
-    function models()
+    function models(Request $request)
     {
-        $brand = $this->modelService->filter()->query()->pluck('brand')->first();
-        $models = $this->modelService->query()->pluck('model');
+        $manufacturer = ExternalApiService::getManufacturer($request->get('brand'));
+        $models = ExternalApiService::getModels($manufacturer->Make_ID)->pluck('Model_Name');
 
-        return response()->json(['status' => true, 'brand' => $brand, 'models' => $models], 200);
+        return response()->json(['status' => true, 'brand' => $manufacturer->Make_Name, 'models' => $models], 200);
     }
 }
