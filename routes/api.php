@@ -17,8 +17,8 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => 'cars'], function () {
     Route::get('/', 'CarController@index');
 
-    Route::post('create', 'CarController@create');
-    Route::post('edit/{id}', 'CarController@edit');
+    Route::post('create', 'CarController@create')->middleware('proceed.vin');
+    Route::post('edit/{id}', 'CarController@edit')->middleware('proceed.vin');
 
     Route::post('remove/{id}', 'CarController@remove');
 
