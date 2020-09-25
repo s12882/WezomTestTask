@@ -58,12 +58,16 @@ class ExternalApiService
     {
         $json = json_decode(file_get_contents('https://vpic.nhtsa.dot.gov/api/vehicles/decodevin/'.$number.'?format=json&model'));
 
-        $result = $json->Result;
+        if (isset($json->Results)) {
 
-        return [
-            'brand' => $result[6]->Value,
-            'model' => $result[8]->Value,
-            'year' => $result[9]->Value
-        ];
+            $result = $json->Results;
+            return [
+                'brand' => $result[6]->Value ?: null,
+                'model' => $result[8]->Value ?: null,
+                'year' => $result[9]->Value ?: null
+            ];
+        }
+
+        return [];
     }
 }

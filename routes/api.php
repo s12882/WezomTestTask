@@ -19,7 +19,7 @@ Route::group(['prefix' => 'cars'], function () {
     Route::post('create', 'CarController@create')->middleware('proceed.vin');
     Route::post('edit/{id}', 'CarController@edit')->middleware('proceed.vin');
 
-    Route::post('remove/{id}', 'CarController@remove');
+    Route::get('remove/{id}', 'CarController@remove');
     Route::get('export', 'CarController@export');
     Route::post('models', 'CarController@models');
 });

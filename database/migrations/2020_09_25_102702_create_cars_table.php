@@ -23,6 +23,8 @@ class CreateCarsTable extends Migration
             $table->string('model');
             $table->year('year');
             $table->timestamps();
+
+            $table->unique(['gov_number, vin_code']);
         });
     }
 

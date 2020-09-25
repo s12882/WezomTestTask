@@ -35,7 +35,7 @@ class CarService
     public function filter()
     {
         if ($this->request->has('name')) {
-            $this->query->where('name', $this->request->get('name'));
+            $this->query->where('name', 'LIKE', '%'.$this->request->get('name').'%');
         }
 
         if ($this->request->has('gov_number')) {
@@ -43,15 +43,15 @@ class CarService
         }
 
         if ($this->request->has('color')) {
-            $this->query->where('color', $this->request->get('color'));
+            $this->query->where('color', 'LIKE', '%'.$this->request->get('color').'%');
         }
 
         if ($this->request->has('brand')) {
-            $this->query->where('brand', 'LIKE', $this->request->get('brand') . '%');
+            $this->query->where('brand', 'LIKE', $this->request->get('brand').'%');
         }
 
         if ($this->request->has('model')) {
-            $this->query->where('model', 'LIKE', $this->request->get('model') . '%');
+            $this->query->where('model', 'LIKE', $this->request->get('model').'%');
         }
 
         if ($this->request->has('year')) {
