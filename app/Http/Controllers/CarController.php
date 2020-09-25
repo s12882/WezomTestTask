@@ -2,14 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\CarExport;
 use App\Http\Requests\CarCreateRequest;
 use App\Http\Requests\CarEditRequest;
 use App\Models\Car;
 use App\Services\CarService;
 use Illuminate\Http\JsonResponse;
-use Maatwebsite\Excel\Facades\Excel;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Throwable;
 
 class CarController extends Controller
@@ -87,16 +84,6 @@ class CarController extends Controller
             logger($exception->getMessage());
             return response()->json(['status' => false, 'message' => __('Error occurred while deleting car info')], 500);
         }
-    }
-
-    /**
-     * @return BinaryFileResponse
-     */
-    function export()
-    {
-        $cars = $this->modelService->filter()->query()->get();
-
-        return Excel::download(new CarExport($cars), 'cars.xlsx');
     }
 
     /**

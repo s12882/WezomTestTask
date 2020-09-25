@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,7 +20,6 @@ Route::group(['prefix' => 'cars'], function () {
     Route::post('edit/{id}', 'CarController@edit')->middleware('proceed.vin');
 
     Route::post('remove/{id}', 'CarController@remove');
-
     Route::post('models', 'CarController@models');
 });
 
